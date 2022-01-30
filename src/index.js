@@ -9,17 +9,14 @@ const pre = document.querySelector('pre')
 
 const handlers = {
   INCREMENT: state => ({ ...state, counter: state.counter + 1 }),
-  DECREMENT: state => ({ ...state, counter: state.counter -1 }),
-  ADD: (state, action) => ({ ...state, counter: state.counter + action.payload })
+  DECREMENT: state => ({ ...state, counter: state.counter - 1 }),
+  ADD: (state, action) => ({ ...state, counter: state.counter + action.payload }),
+  DEFAULT: state => state
 }
 
 function reducer(state = initialState, action) {
-  switch (action.type) {
-    case 'INCREMENT': return { ...state, counter: state.counter + 1 }
-    case 'DECREMENT': return { ...state, counter: state.counter - 1 }
-    case 'ADD': return { ...state, counter: state.counter + action.payload }
-    default: return state
-  }
+  const handler = handlers[action.type] || handlers.DEFAULT
+  return handler(state, action)
 }
 
 function createStore(rootReducer) {
